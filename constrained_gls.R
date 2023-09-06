@@ -15,7 +15,7 @@ constrained_gls <- function(y, x, sigma_inv,
   y_sigma_x <- t(y) %*% sigma_inv %*% x
   
   c_mat <- map(
-    seq(1, len_beta, by = 3),
+    seq(1, len_beta, by = len_t),
     ~c(rep(0, .x - 1), rep(1, 3), rep(0, len_beta - .x - 2))
   )
   

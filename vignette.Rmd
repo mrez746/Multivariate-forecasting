@@ -1,0 +1,50 @@
+---
+title: "Multivariate forecasting"
+output: html_notebook
+---
+
+```{r setup}
+library(tidyverse)
+source("multivariate_forecasting.R")
+source("initialization_functions.R")
+source("constrained_gls.R")
+source("mle.R")
+```
+
+We will make a synthetic data set of 5 weeks of call volume from two streams, assuming each day is divided into four time intervals.
+
+```{r}
+set.seed(101)
+
+df <- tibble(
+  stream = rep(1:2, each = 5*7*4),
+  call_volume = rpois(5*7*4*2, 5),
+  wd = rep(1:7, 5*4*2),
+  d = rep(1:(5*7), each = 4) %>% rep(2),
+  t = rep(1:4, 5*7*2)
+)
+```
+
+```{r}
+df
+```
+
+```{r}
+rslt <- multivariate_forecasting(
+  df = df, 
+  horizon = 7*4, 
+  max_iter = 100, 
+  algo = "NLOPT_LD_LBFGS"
+)
+```
+
+
+```{r}
+names(rslt)
+```
+
+```{r}
+rslt$df_pred
+```
+
+
