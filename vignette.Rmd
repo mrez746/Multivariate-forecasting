@@ -45,7 +45,7 @@ names(rslt)
 ```
 
 ```{r}
-rslt$df_pred
+head(rslt$df_pred)
 ```
 
 
