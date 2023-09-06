@@ -1,9 +1,9 @@
 ---
 title: "Multivariate forecasting"
-output: html_notebook
+output: pdf_document #html_notebook
 ---
 
-```{r setup}
+```{r setup, message=FALSE}
 library(tidyverse)
 source("multivariate_forecasting.R")
 source("initialization_functions.R")
@@ -26,15 +26,16 @@ df <- tibble(
 ```
 
 ```{r}
-df
+head(df)
 ```
 
-```{r}
+```{r, message=FALSE}
 rslt <- multivariate_forecasting(
   df = df, 
   horizon = 7*4, 
   max_iter = 100, 
-  algo = "NLOPT_LD_LBFGS"
+  algo = "NLOPT_LD_LBFGS",
+  verbose = FALSE
 )
 ```
 

@@ -1,7 +1,8 @@
 multivariate_forecasting <- function(df, 
                                      horizon,
                                      max_iter = 200, 
-                                     algo = "NLOPT_LD_LBFGS") {
+                                     algo = "NLOPT_LD_LBFGS",
+                                     verbose = TRUE) {
   # Description:
   #       Code for implementation of the multivariate model in
   #       Ye, Han, James Luedtke, and Haipeng Shen. 2019. 
@@ -16,6 +17,7 @@ multivariate_forecasting <- function(df,
   #         $t (int) intraday time interval index, starting from 1
   #       horizon (int) forecast horizon, i.e., # forecasts to make 
   #       max_iter (int) maximum iteration for iterative estimation procedures
+  #       verbose (lgl) print out iteration process?
   #       algo (chr) name of algorithm to use in nloptr
   # Outputs:
   #       (list) w/ following components
@@ -132,9 +134,9 @@ multivariate_forecasting <- function(df,
   
   for (run in 1:max_iter) {
     
-    print(paste0(
-      "Estimating f, u, and sigma -- Iteration ", run
-    ))
+    if (verbose) {
+      print(paste0("Estimating f, u, and sigma -- Iteration ", run))
+    }
     # Construct the cov matrix for solving the GLS
     indx_r <- map(
       1:len_x,
@@ -276,9 +278,9 @@ multivariate_forecasting <- function(df,
   
   for (run in 1:max_iter) {
     
-    print(paste0(
-      "Estimating alpha, A, and omega -- Iteration ", run
-    ))
+    if (verbose) {
+      print(paste0("Estimating alpha, A, and omega -- Iteration ", run))
+    }
     # Estimate A and omega
     mod <- VAR(
       x = t(u_mat - alpha_mat), 
