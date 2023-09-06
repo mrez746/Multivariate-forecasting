@@ -11,7 +11,7 @@ source("constrained_gls.R")
 source("mle.R")
 ```
 
-We will make a synthetic data set of 5 weeks of call volume from two streams, assuming each day is divided into four time intervals.
+We will make a synthetic data set of 5 weeks of call volume from 2 streams, assuming each day is divided into 4 time intervals.
 
 ```{r}
 set.seed(101)
@@ -29,25 +29,34 @@ df <- tibble(
 head(df)
 ```
 
-We will forecast for one week into the future.
+See the code in `multivariate_forecasting.R` for the function's documentation.
 
 ```{r, message=FALSE}
 rslt <- multivariate_forecasting(
   df = df, 
-  horizon = 7*4, 
+  horizon = 7*4, # Forecast for one week into the future
   max_iter = 100, 
   algo = "NLOPT_LD_LBFGS",
   verbose = FALSE
 )
 ```
 
-
 ```{r}
 names(rslt)
 ```
 
+The forecasts are given in a data frame, which can be accessed through the `df_pred` component of the resulting list.
+
 ```{r}
 head(rslt$df_pred)
 ```
+
+The estimated parameters of the model can be accessed through the `params` component of the resulting list.
+
+```{r}
+rslt$params
+```
+
+
 
 
