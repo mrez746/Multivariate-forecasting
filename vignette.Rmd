@@ -29,6 +29,8 @@ df <- tibble(
 head(df)
 ```
 
+We will forecast for one week into the future.
+
 ```{r, message=FALSE}
 rslt <- multivariate_forecasting(
   df = df, 
