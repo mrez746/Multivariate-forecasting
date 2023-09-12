@@ -3,7 +3,12 @@ title: "Multivariate forecasting"
 output: pdf_document #html_notebook
 ---
 
-```{r setup, message=FALSE}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+```
+
+
+```{r message=FALSE, warning=FALSE}
 library(tidyverse)
 source("multivariate_forecasting.R")
 source("initialization_functions.R")
@@ -19,7 +24,7 @@ set.seed(101)
 df <- tibble(
   stream = rep(1:2, each = 5*7*4),
   call_volume = rpois(5*7*4*2, 5),
-  wd = rep(1:7, 5*4*2),
+  wd = rep(rep(1:7, 5*2), each = 4),
   d = rep(1:(5*7), each = 4) %>% rep(2),
   t = rep(1:4, 5*7*2)
 )
