@@ -35,8 +35,8 @@ See the code in `multivariate_forecasting.R` for the function's documentation.
 rslt <- multivariate_forecasting(
   df = df, 
   horizon = 7*4, # Forecast for one week into the future
-  max_iter = 100, 
-  algo = "NLOPT_LD_LBFGS",
+  max_iter = 100, # In practice, set to 1,000 or greater
+  algo = "NLOPT_GD_STOGO_RAND",
   verbose = FALSE
 )
 ```
