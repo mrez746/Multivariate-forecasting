@@ -329,7 +329,7 @@ multivariate_forecasting <- function(df,
   }
   step2_converge <- run < max_iter
   
-  # Forecasting next 2 weeks
+  # Forecasting future call volumes
   alpha_wd <- matrix(
     alpha, 
     nrow = len_i, 
