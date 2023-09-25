@@ -1,7 +1,7 @@
 multivariate_forecasting <- function(df, 
                                      horizon,
                                      max_iter = 200, 
-                                     algo = "NLOPT_LD_LBFGS",
+                                     algo = "NLOPT_GD_STOGO_RAND",
                                      verbose = TRUE) {
   # Description:
   #       Code for implementation of the multivariate model in
@@ -17,8 +17,11 @@ multivariate_forecasting <- function(df,
   #         $t (int) intraday time interval index, starting from 1
   #       horizon (int) forecast horizon, i.e., # forecasts to make 
   #       max_iter (int) maximum iteration for iterative estimation procedures
+  #       algo (chr) name of algorithm to use in nloptr, for example
+  #         "NLOPT_LD_LBFGS"
+  #         "NLOPT_GD_STOGO"
+  #         "NLOPT_GD_STOGO_RAND"
   #       verbose (lgl) print out iteration process?
-  #       algo (chr) name of algorithm to use in nloptr
   # Outputs:
   #       (list) w/ following components
   #         $df_pred (tibble) w/ following columns
@@ -27,7 +30,13 @@ multivariate_forecasting <- function(df,
   #             $pred (int) call volume forecast
   #         $step1_converge (lgl) did procedure of Sec 3.2.1 converge?
   #         $step2_converge (lgl) did procedure of Sec 3.2.2 converge?
-  #         $params (list) estimated parameters
+  #         $params (list) estimated parameters:
+  #             $alpha (dbl vec) order: region ID, wday
+  #             $f_vec (dbl vec) order: region ID, wday, time interval
+  #             $u_vec (dbl vec) order: region ID, day ID
+  #             $A (mat) 
+  #             $omega (mat) 
+  #             $sigma (mat) 
   # Required packages:
   #       MTS package
   #       lubridate package
@@ -328,7 +337,7 @@ multivariate_forecasting <- function(df,
   }
   step2_converge <- run < max_iter
   
-  # Forecasting future call volumes
+  # Forecasting next 2 weeks
   alpha_wd <- matrix(
     alpha, 
     nrow = len_i, 
