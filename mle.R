@@ -1,10 +1,12 @@
 mle <- function(alpha, 
+                sd_alpha,
                 len_i, 
                 n1, n2, 
                 nu, one, 
                 A, omega,
-                tol = 1.0e-8,
-                alg = "NLOPT_LD_LBFGS") {
+                algo = "NLOPT_GD_STOGO_RAND",
+                tol = 1e-06,
+                max_eval = 10000) {
   # Function for estimating alpha by MLE
   # Inputs:
   #       alpha_0 (dbl vec)
@@ -15,10 +17,11 @@ mle <- function(alpha,
   #       one
   #       A
   #       omega
-  #       tol
-  #       alg
+  #       algo (chr) e.g., "NLOPT_GD_STOGO", "NLOPT_GD_STOGO_RAND"
+  #       tol (dbl) 
+  #       max_eval (int) 
   # Outputs:
-  #       (dbl vec) ML estimate of alpha
+  #       (dbl vec) ML estimate of alpha. Order: region ID, wday
   require(nloptr)
   omega_inv <- solve(omega)
   A_omega <- t(A) %*% omega_inv
@@ -72,13 +75,16 @@ mle <- function(alpha,
     return(out)
   }
   
-  opts <- list("algorithm" = alg,
-               "xtol_rel" = tol)
+  opts <- list("algorithm" = algo,
+               "xtol_rel" = tol,
+               "maxeval" = max_eval)
   
   out <- nloptr(
     x0 = alpha, 
     eval_f = obj_fun, 
     eval_grad_f = grad_fun,
+    lb = alpha - sd_alpha,
+    ub = alpha + sd_alpha,
     opts = opts
   )
   return(out)

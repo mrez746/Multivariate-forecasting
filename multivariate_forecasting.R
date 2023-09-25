@@ -308,6 +308,7 @@ multivariate_forecasting <- function(df,
     
     mle_out <- mle(
       alpha = alpha, 
+      sd_alpha = params_0$sd_alpha,
       n1 = params_0$n1_vec, 
       n2 = params_0$n2_vec, 
       nu = nu_list, 
@@ -315,7 +316,7 @@ multivariate_forecasting <- function(df,
       len_i = len_i, 
       A = A, 
       omega = omega, 
-      tol = 1.0e-8,
+      tol = 1.0e-6,
       alg = algo
     )
     alpha_old <- alpha
