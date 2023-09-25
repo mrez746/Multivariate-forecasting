@@ -36,12 +36,14 @@ head(df)
 
 See the code in `multivariate_forecasting.R` for the function's documentation.
 
+For demonstration, we use low-storage BFGS algorithm, a local optimization algorithm. Global optimization algorithms, such as StoGO, can also be used; however, the computation time may increase substantially.
+
 ```{r, message=FALSE}
 rslt <- multivariate_forecasting(
   df = df, 
   horizon = 7*4, # Forecast for one week into the future
   max_iter = 100, # In practice, set to 1,000 or greater
-  algo = "NLOPT_GD_STOGO_RAND",
+  algo = "NLOPT_LD_LBFGS", # Can use other algorithms, e.g., NLOPT_GD_STOGO 
   verbose = FALSE
 )
 ```
